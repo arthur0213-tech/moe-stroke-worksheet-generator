@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>教育部標準筆順 - 姓名與生字練習簿生成器</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <!-- 頂部導覽列 -->
+  <header class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">✏️</span>
+      <div>
+        <h1>教育部標準筆順 姓名練習簿生成器</h1>
+      </div>
+      <span class="badge">臺灣教育部標準字體 + 筆順字典(twpen.com)擴充</span>
+    </div>
+    <div class="nav-actions">
+      <button id="btnPlayDemo" class="btn btn-outline" title="播放教育部標準筆順動畫">
+        <span>▶️</span> 筆順動畫教學
+      </button>
+      <button id="btnPrint" class="btn btn-primary btn-lg" title="直接列印或另存為 PDF 檔案">
+        <span>🖨️</span> 列印 / 另存為 PDF
+      </button>
+    </div>
+  </header>
+
+  <!-- 主操作視窗 -->
+  <main class="main-layout">
+    <!-- 左側教師設定面板 -->
+    <aside class="control-panel">
+      <!-- 練習內容設定 -->
+      <section class="panel-section">
+        <h2 class="section-title"><span>📝</span> 學生名單與練習內容</h2>
+        
+        <!-- 標籤切換：單生 vs 全班批次 vs 生字詞語 -->
+        <div class="tab-group" id="inputTabs">
+          <button class="tab-btn active" data-tab="single">單生模式</button>
+          <button class="tab-btn" data-tab="batch">全班批次產生</button>
+          <button class="tab-btn" data-tab="custom">自訂生字詞語</button>
+        </div>
+
+        <!-- 1. 單生模式 -->
+        <div id="tabSingle" class="tab-content active">
+          <div class="grid-2">
+            <div class="form-group">
+              <label class="form-label" for="studentName">學生姓名</label>
+              <input type="text" id="studentName" class="form-control" value="許志安" placeholder="請輸入姓名">
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="studentSeat">座號 (可選)</label>
+              <input type="text" id="studentSeat" class="form-control" value="01" placeholder="例: 01">
+            </div>
+          </div>
+          <p class="form-hint">💡 優先使用臺灣教育部標準筆順；若教育部未收錄（如「喆」等），自動由 <strong>twpen.com</strong> 補齊筆順！</p>
+        </div>
+
+        <!-- 2. 全班批次產生模式 -->
+        <div id="tabBatch" class="tab-content" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="batchRoster">全班學生名單 (一行一個)</label>
+            <textarea id="batchRoster" class="form-control" rows="6" placeholder="01 陳大明&#10;02 林小美&#10;03 許志安&#10;04 黃雅婷">01 陳大明
+02 林小美
+03 許志安</textarea>
+          </div>
+          <p class="form-hint">🌟 一鍵為全班每位學生獨立生成一張 A4 練習單，整批列印一人一張！支援「座號 姓名」格式。</p>
+        </div>
+
+        <!-- 3. 自訂生字詞語模式 -->
+        <div id="tabCustom" class="tab-content" style="display: none;">
+          <div class="form-group">
+            <label class="form-label" for="customWords">自訂字詞</label>
+            <input type="text" id="customWords" class="form-control" value="中正國小" placeholder="例: 中正國小 或 課文生字">
+          </div>
+          <p class="form-hint">💡 可輸入詞語或生字，依序生成每個國字的逐步筆畫分解與習寫格。</p>
+        </div>
+      </section>
+
+      <!-- 排版版面範本 -->
+      <section class="panel-section">
+        <h2 class="section-title"><span>📐</span> 排版與範本選擇</h2>
+        
+        <div class="form-group">
+          <label class="form-label" for="layoutMode">版面範本</label>
+          <select id="layoutMode" class="form-control">
+            <option value="decomposition" selected>筆畫逐步分解模式 (相片範本：逐步筆順+描紅+習寫)</option>
+            <option value="whiteboard">🌟 護貝大字白板卡模式 (大字姓名+旁邊筆順提示，專供護貝白板筆習寫)</option>
+            <option value="continuous">全名連寫模式 (姓名連續書寫與描紅)</option>
+            <option value="hybrid">綜合精緻模式 (上方全名連寫 + 下方逐字分解)</option>
+          </select>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group" id="colsPerRowGroup">
+            <label class="form-label" for="colsPerRow">每行格數</label>
+            <select id="colsPerRow" class="form-control">
+              <option value="12" selected>12 格 (相片標準)</option>
+              <option value="11">11 格</option>
+              <option value="10">10 格 (大字格)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="paperOrientation">紙張方向</label>
+            <select id="paperOrientation" class="form-control">
+              <option value="portrait" selected>A4 直向</option>
+              <option value="landscape">A4 橫向</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 護貝大字白板卡專用設定區 (當選擇白板卡模式時顯示) -->
+        <div id="whiteboardOptionsGroup" style="display: none; background: #eff6ff; padding: 14px; border-radius: 8px; margin-bottom: 12px; border: 1px solid #bfdbfe;">
+          <div style="font-size: 13px; font-weight: 700; color: #1e40af; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+            <span>💧</span> 白板卡專用選項 (護貝白板筆練習)
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="form-label" for="whiteboardGuideStyle" style="color: #1e3a8a;">大字導引樣式</label>
+            <select id="whiteboardGuideStyle" class="form-control">
+              <option value="hollow_guide" selected>空心外框 + 筆順虛線箭頭 + 起筆號碼 (如附圖)</option>
+              <option value="trace_numbered">淺灰描紅字 + 圓圈號碼 (① ② ③)</option>
+              <option value="trace_plain">純淺灰描紅字 (無標註，純描摹)</option>
+            </select>
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 10px;">
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="whiteboardBoxType" style="color: #1e3a8a;">大字格組合</label>
+              <select id="whiteboardBoxType" class="form-control">
+                <option value="trace_and_blank" selected>大字導引 + 大空白格</option>
+                <option value="trace_only">純超大字導引格</option>
+              </select>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <label class="form-label" for="whiteboardTrackColor" style="color: #1e3a8a;">虛線與箭頭顏色</label>
+              <select id="whiteboardTrackColor" class="form-control">
+                <option value="#2563eb" selected>標準藍 (如附圖)</option>
+                <option value="#dc2626">活力紅</option>
+                <option value="#16a34a">護眼綠</option>
+                <option value="#475569">深石灰</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="switch-group" style="padding: 4px 0;">
+            <span class="switch-label" style="color: #1e3a8a; font-weight: 600;">顯示筆順虛線與方向箭頭 (引導運筆)</span>
+            <label class="switch">
+              <input type="checkbox" id="checkShowTrackWithArrow" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="switch-group" style="padding: 4px 0;">
+            <span class="switch-label" style="color: #1e3a8a; font-weight: 600;">顯示紅色起筆順序號碼 (1, 2, 3...)</span>
+            <label class="switch">
+              <input type="checkbox" id="checkShowStrokeNumbers" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="switch-group" style="padding: 4px 0;">
+            <span class="switch-label" style="color: #1e3a8a; font-weight: 600;">在旁邊顯示筆畫順序提示欄</span>
+            <label class="switch">
+              <input type="checkbox" id="checkShowStrokeHintStrip" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 一般模式包含行類型勾選 -->
+        <div id="normalLayoutControls">
+          <div class="switch-group">
+            <span class="switch-label">包含筆畫逐步分解行 (如照片第1列)</span>
+            <label class="switch">
+              <input type="checkbox" id="checkDecomposition" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="switch-group">
+            <span class="switch-label">包含全字描紅行 (如照片第2列整排描摹)</span>
+            <label class="switch">
+              <input type="checkbox" id="checkTraceRow" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="switch-group">
+            <span class="switch-label">包含空白自主書寫行</span>
+            <label class="switch">
+              <input type="checkbox" id="checkBlankRow" checked>
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <div class="switch-group">
+            <span class="switch-label">標示最新一筆 (突出分解新筆畫)</span>
+            <label class="switch">
+              <input type="checkbox" id="checkHighlightLatest">
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <!-- 格線與視覺樣式 -->
+      <section class="panel-section">
+        <h2 class="section-title"><span>🎨</span> 格線與色彩設定</h2>
+        
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="gridType">格線樣式</label>
+            <select id="gridType" class="form-control">
+              <option value="tianzi" selected>田字格 (十字虛線)</option>
+              <option value="mizi">米字格 (米字虛線)</option>
+              <option value="cross">十字格 (實線)</option>
+              <option value="box">方格 (純外框)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="gridColor">格線顏色</label>
+            <select id="gridColor" class="form-control">
+              <option value="#d63031" selected>經典教學紅</option>
+              <option value="#64748b">質感灰</option>
+              <option value="#1e293b">典雅黑</option>
+              <option value="#16a34a">護眼綠</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="traceColor">描紅淺灰深淺</label>
+            <select id="traceColor" class="form-control">
+              <option value="#b5b5b5" selected>標準淺灰 (最佳描寫)</option>
+              <option value="#949494">較深鉛灰色</option>
+              <option value="#d1d1d1">極淡描紅</option>
+              <option value="#f87171">傳統淡粉紅</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="emptyBoxFill">分解完畢填補</label>
+            <select id="emptyBoxFill" class="form-control">
+              <option value="trace" selected>填滿全字描紅</option>
+              <option value="blank">留空為空白格</option>
+            </select>
+          </div>
+        </div>
+      </section>
+
+      <!-- 頁首與抬頭自訂 -->
+      <section class="panel-section">
+        <h2 class="section-title"><span>🏷️</span> 頁首標題與班級資訊</h2>
+        
+        <div class="form-group">
+          <label class="form-label" for="schoolTitle">練習單標題</label>
+          <input type="text" id="schoolTitle" class="form-control" value="生字練習">
+        </div>
+
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label" for="gradeClassText">年級班級</label>
+            <input type="text" id="gradeClassText" class="form-control" value="____年____班">
+          </div>
+          <div class="form-group">
+            <label class="form-label">顯示學生欄位</label>
+            <div style="padding-top: 6px;">
+              <label><input type="checkbox" id="checkShowStudentHeader" checked> 顯示班級/座號/姓名</label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </aside>
+
+    <!-- 右側即時預覽區 (A4 畫布) -->
+    <section class="preview-container">
+      <div class="preview-toolbar">
+        <div id="previewInfo">正在產生預覽...</div>
+        <div class="zoom-controls">
+          <span>縮放：</span>
+          <button class="zoom-btn" id="btnZoomOut" title="縮小">-</button>
+          <span id="zoomLabel">85%</span>
+          <button class="zoom-btn" id="btnZoomIn" title="放大">+</button>
+          <button class="zoom-btn" id="btnZoomReset" title="重設" style="width: auto; padding: 0 8px;">重設</button>
+        </div>
+      </div>
+
+      <div class="preview-scroll-area" id="previewArea">
+        <!-- 動態生成之 A4 練習簿頁面 -->
+      </div>
+    </section>
+  </main>
+
+  <!-- 筆順動畫播放器 Modal -->
+  <div class="modal-overlay" id="playerModal">
+    <div class="player-card">
+      <div class="player-header">
+        <h3 id="playerCharTitle">教育部標準筆順播放器</h3>
+        <button class="player-close" id="btnPlayerClose">&times;</button>
+      </div>
+      <div class="player-body">
+        <div class="player-canvas-box" id="playerCanvasBox">
+          <!-- SVG 動畫畫布 -->
+          <svg id="playerSvg" viewBox="0 0 2048 2048" style="width:100%; height:100%;">
+            <!-- 底紋十字虛線 -->
+            <line x1="0" y1="1024" x2="2048" y2="1024" stroke="#d63031" stroke-width="12" stroke-dasharray="32,32" opacity="0.6"/>
+            <line x1="1024" y1="0" x2="1024" y2="2048" stroke="#d63031" stroke-width="12" stroke-dasharray="32,32" opacity="0.6"/>
+            <rect x="6" y="6" width="2036" height="2036" fill="none" stroke="#d63031" stroke-width="16"/>
+            <g id="playerCompletedStrokes"></g>
+            <path id="playerCurrentStroke" d="" fill="#2563eb" stroke="#2563eb" stroke-width="4"/>
+          </svg>
+        </div>
+        <div style="margin-bottom: 12px; font-weight: 600; color: #475569;" id="strokeStepText">
+          筆順：第 0 / 0 畫
+        </div>
+        <div class="player-controls">
+          <button id="btnPlayerPrev" class="btn btn-outline">上一畫</button>
+          <button id="btnPlayerPlay" class="btn btn-primary">播放動畫</button>
+          <button id="btnPlayerNext" class="btn btn-outline">下一畫</button>
+          <button id="btnPlayerReset" class="btn btn-outline">重來</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 引入核心模組 -->
+  <script src="js/moe_parser.js"></script>
+  <script src="js/worksheet_generator.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
