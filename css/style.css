@@ -1,0 +1,886 @@
+/* ==========================================================================
+   臺灣教育部標準筆順 - 姓名與生字練習簿樣式表
+   ========================================================================== */
+
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary-color: #475569;
+  --bg-color: #f1f5f9;
+  --card-bg: #ffffff;
+  --border-color: #cbd5e1;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --success-color: #10b981;
+  --danger-color: #ef4444;
+  --grid-line-color: #d63031;
+  --a4-width: 210mm;
+  --a4-height: 297mm;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "微軟正黑體", sans-serif;
+  background-color: var(--bg-color);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 頂部導覽列 */
+.navbar {
+  background: #ffffff;
+  border-bottom: 1px solid var(--border-color);
+  padding: 12px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brand-icon {
+  font-size: 26px;
+  line-height: 1;
+}
+
+.nav-brand h1 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.nav-brand .badge {
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid #bfdbfe;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* 主操作區塊佈局 (左側控制欄，右側即時預覽) */
+.main-layout {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+  height: calc(100vh - 61px);
+}
+
+/* 控制側邊欄 */
+.control-panel {
+  width: 420px;
+  min-width: 360px;
+  background: var(--card-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.02);
+}
+
+.panel-section {
+  padding: 20px;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: #334155;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 14px;
+  color: #1e293b;
+  background: #ffffff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+  font-family: inherit;
+}
+
+.form-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+
+/* 分頁選項籤 (Tabs) */
+.tab-group {
+  display: flex;
+  background: #f1f5f9;
+  padding: 3px;
+  border-radius: 8px;
+  margin-bottom: 14px;
+}
+
+.tab-btn {
+  flex: 1;
+  padding: 6px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.tab-btn.active {
+  background: #ffffff;
+  color: var(--primary-color);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* 雙欄設定格 */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+/* 開關選項 Switch */
+.switch-group {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.switch-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #334155;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 38px;
+  height: 22px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cbd5e1;
+  transition: .2s;
+  border-radius: 22px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  transition: .2s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: var(--primary-color);
+}
+
+input:checked + .slider:before {
+  transform: translateX(16px);
+}
+
+/* 按鈕樣式 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-decoration: none;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: #ffffff;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+}
+
+.btn-outline {
+  background: #ffffff;
+  color: #334155;
+  border-color: var(--border-color);
+}
+
+.btn-outline:hover {
+  background: #f8fafc;
+  border-color: #94a3b8;
+}
+
+.btn-success {
+  background: var(--success-color);
+  color: #ffffff;
+}
+
+.btn-success:hover {
+  background: #059669;
+}
+
+.btn-lg {
+  padding: 12px 22px;
+  font-size: 15px;
+}
+
+/* 右側即時預覽區 */
+.preview-container {
+  flex: 1;
+  background: #475569;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.preview-toolbar {
+  background: #334155;
+  padding: 8px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #ffffff;
+  font-size: 13px;
+}
+
+.zoom-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.zoom-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.zoom-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.preview-scroll-area {
+  flex: 1;
+  overflow: auto;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+}
+
+/* A4 紙張模擬 (預設直向) */
+.worksheet-page {
+  width: var(--a4-width);
+  min-height: var(--a4-height);
+  background: #ffffff;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+  padding: 14mm 12mm;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform 0.2s ease-out;
+  transform-origin: top center;
+}
+
+/* A4 橫向 */
+.worksheet-page.orientation-landscape {
+  width: var(--a4-height);
+  min-height: var(--a4-width);
+  padding: 12mm 14mm;
+}
+
+/* 練習簿頁首 */
+.worksheet-header {
+  margin-bottom: 12px;
+  border-bottom: 2px solid #334155;
+  padding-bottom: 8px;
+}
+
+.header-title {
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: 2px;
+  margin-bottom: 10px;
+  color: #0f172a;
+}
+
+.header-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
+  padding: 0 4px;
+}
+
+.meta-field {
+  display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
+  border-bottom: 1.5px solid #0f172a;
+  padding: 0 8px;
+}
+
+.student-name {
+  min-width: 80px;
+  text-align: center;
+}
+
+/* 內容區塊 */
+.worksheet-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.char-section {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-bottom: 6px;
+}
+
+/* 行容器與網格排列 (整行 12 格) */
+.worksheet-row {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-top: 1.5px solid var(--grid-line-color);
+  border-bottom: 1.5px solid var(--grid-line-color);
+  border-left: 1.5px solid var(--grid-line-color);
+  margin-bottom: 4px;
+  background: #ffffff;
+}
+
+.worksheet-row:last-child {
+  margin-bottom: 0;
+}
+
+/* 單一格子 */
+.grid-cell {
+  flex: 1;
+  aspect-ratio: 1 / 1;
+  border-right: 1.5px solid var(--grid-line-color);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* 格子內向量 SVG */
+.grid-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   護貝大字白板卡專用樣式 (姓名大字 + 旁邊筆順提示)
+   ========================================================================== */
+.whiteboard-page {
+  padding: 15mm 16mm;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.whiteboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid #1e293b;
+  padding-bottom: 6px;
+  margin-bottom: 12px;
+}
+
+.whiteboard-title-group {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.whiteboard-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 1px;
+  white-space: nowrap;
+}
+
+.whiteboard-tip {
+  font-size: 12px;
+  font-weight: 600;
+  color: #059669;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  padding: 3px 8px;
+  border-radius: 999px;
+}
+
+.whiteboard-student-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.whiteboard-student-info .info-item {
+  display: flex;
+  align-items: center;
+}
+
+.whiteboard-student-info .meta-field {
+  font-size: 18px;
+  color: #2563eb;
+  border-bottom: 2px solid #2563eb;
+  padding: 0 8px;
+}
+
+.whiteboard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 12px;
+}
+
+/* 橫向排版 */
+.whiteboard-page.orientation-landscape .whiteboard-content {
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: stretch;
+}
+
+/* 直向單字卡片 */
+.whiteboard-char-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+/* 橫向單字卡片 */
+.whiteboard-page.orientation-landscape .whiteboard-char-card {
+  flex-direction: column;
+  flex: 1;
+  gap: 10px;
+  padding: 10px;
+}
+
+/* 大字格區塊 */
+.whiteboard-boxes-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.whiteboard-page.orientation-landscape .whiteboard-boxes-group {
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.box-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.box-tag {
+  font-size: 11px;
+  font-weight: 700;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+
+/* 大字格容器：56mm 適中尺寸，四周預留充足安全列印與裁切留白，同時保證右側分解欄寬敞不擠壓 */
+.big-grid-box {
+  width: 56mm;
+  height: 56mm;
+  aspect-ratio: 1 / 1;
+  border: 2px solid var(--grid-line-color);
+  background: #ffffff;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+  position: relative;
+}
+
+/* 若姓名有 4 字，格子適度微調以容納於單頁 A4 */
+.chars-count-4 .big-grid-box {
+  width: 48mm;
+  height: 48mm;
+}
+
+/* 若為純超大描紅模式 (僅單一格)，格子可適度放大 */
+.box-mode-trace_only .big-grid-box {
+  width: 70mm;
+  height: 70mm;
+}
+
+/* 橫向排版時的格子大小 */
+.whiteboard-page.orientation-landscape .big-grid-box {
+  width: 54mm;
+  height: 54mm;
+}
+
+/* 旁邊筆順順序提示欄 (Stroke Hint Strip) */
+.stroke-hint-strip {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background: #f8fafc;
+  border: 1px dashed #cbd5e1;
+  border-radius: 8px;
+  padding: 6px 10px;
+  min-width: 135px;
+}
+
+.whiteboard-page.orientation-landscape .stroke-hint-strip {
+  width: 100%;
+  padding: 6px;
+}
+
+.hint-strip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #334155;
+  border-bottom: 1px dashed #e2e8f0;
+  padding-bottom: 4px;
+}
+
+.hint-count-badge {
+  background: #fee2e2;
+  color: #b91c1c;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 1px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.hint-mini-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  align-items: center;
+}
+
+.mini-hint-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.mini-hint-box {
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--grid-line-color);
+  background: #ffffff;
+  position: relative;
+}
+
+.mini-hint-num {
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+  line-height: 1;
+}
+
+/* 起筆數字標籤 (SVG 內數字 circle) */
+.stroke-number-tag text {
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 筆順動畫播放器 Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.modal-overlay.active {
+  display: flex;
+}
+
+.player-card {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 480px;
+  max-width: 90vw;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+.player-header {
+  padding: 16px 20px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.player-header h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.player-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #94a3b8;
+  cursor: pointer;
+}
+
+.player-close:hover {
+  color: #0f172a;
+}
+
+.player-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.player-canvas-box {
+  width: 260px;
+  height: 260px;
+  border: 2px solid var(--grid-line-color);
+  position: relative;
+  background: #ffffff;
+  margin-bottom: 20px;
+}
+
+.player-controls {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+/* 載入中 Spinner */
+.spinner {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ==========================================================================
+   列印優化專用樣式 (@media print)
+   ========================================================================== */
+@page {
+  size: A4;
+  margin: 0mm;
+}
+
+@media print {
+  /* 隱藏網頁操作 UI */
+  .navbar,
+  .control-panel,
+  .preview-toolbar,
+  .modal-overlay,
+  .no-print {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: visible !important;
+  }
+
+  .main-layout {
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .preview-container {
+    background: #ffffff !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .preview-scroll-area {
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: visible !important;
+  }
+
+  /* 紙張重設為標準純白、移除陰影，透過內距保留四周 14mm~15mm 安全留白，同時讓 @page margin:0 自動隱藏瀏覽器網址與日期頁首頁尾 */
+  .worksheet-page {
+    box-shadow: none !important;
+    margin: 0 auto !important;
+    padding: 14mm 15mm !important;
+    width: 210mm !important;
+    max-width: 210mm !important;
+    min-height: auto !important;
+    box-sizing: border-box !important;
+    transform: none !important;
+    page-break-after: always !important;
+    break-after: page !important;
+  }
+
+  .worksheet-page.orientation-landscape {
+    width: 297mm !important;
+    max-width: 297mm !important;
+    padding: 12mm 14mm !important;
+  }
+
+  .worksheet-page:last-child {
+    page-break-after: auto !important;
+    break-after: auto !important;
+  }
+
+  /* 確保 SVG 向量與格線極度銳利 */
+  .grid-svg {
+    shape-rendering: geometricPrecision;
+    text-rendering: geometricPrecision;
+  }
+
+  /* 確保顏色在黑白或彩色印表機正確顯色 */
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
